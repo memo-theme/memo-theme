@@ -7,8 +7,7 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://332712.xyz",
   base: "/",
-  trailingSlash: "always",
-  output: "server",
+  trailingSlash: "never",
   prefetch: true,
   adapter: cloudflare({
     imageService: "cloudflare",
