@@ -1,18 +1,16 @@
+import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
-export function GET(context) {
+export async function GET(context) {
+  const posts = await getCollection("blog");
   return rss({
-    // `<title>` field in output xml
-    title: "Theme Memories",
-    // `<description>` field in output xml
-    description: "A simple astro framework blog theme",
-    // Pull in your project "site" from the endpoint context
-    // https://docs.astro.build/en/reference/api-reference/#site
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     site: context.site,
-    // Array of `<item>`s in output xml
-    // See "Generating items" section for examples using content collections and glob imports
-    items: [],
-    // (optional) inject custom xml
-    customData: `<language>ja-jp</language>`,
+    items: posts.map((post) => ({
+      ...post.data,
+      link: `/blog/${post.id}/`,
+    })),
   });
 }
