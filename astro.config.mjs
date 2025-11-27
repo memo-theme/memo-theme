@@ -5,7 +5,7 @@ import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: process.env.SITE_HOST,
+  site: "https://332712.xyz",
   base: "/",
   trailingSlash: "always",
   output: "server",
