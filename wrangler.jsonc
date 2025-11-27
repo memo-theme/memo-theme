@@ -35,7 +35,7 @@
   },
   "kv_namespaces": [
     {
-      "binding": "THEME_MEMORIES_SESSION",
+      "binding": "SESSION",
       "id": "ee946a242fc4415e8f8e59b9458d90db",
     },
   ],
@@ -48,7 +48,7 @@
   ],
   "d1_databases": [
     {
-      "binding": "THEME_MEMORIES_SESSION_DB",
+      "binding": "DATABASE",
       "database_name": "theme-memories-session",
       "database_id": "ac78ae42-0fe7-463d-a134-7c99328868b5",
     },
