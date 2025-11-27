@@ -1,5 +1,9 @@
 @import "tailwindcss";
+@import "@fontsource/shippori-mincho/400.css";
+@import "@fontsource/noto-serif-sc/400.css";
 
 @theme {
-  --font-family: "Shippori Mincho", "serif";
+  --font-sans: "Shippori Mincho", "Noto Serif SC";
+  --font-serif: "Shippori Mincho", "Noto Serif SC";
+  --font-mono: "Shippori Mincho", "Noto Serif SC";
 }
