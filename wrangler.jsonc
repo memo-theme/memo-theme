@@ -1,0 +1,56 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "332712.xyz",
+      "custom_domain": true,
+    },
+  ],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true,
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+    },
+  },
+  "placement": {
+    "mode": "smart",
+  },
+  "compatibility_date": "2025-11-17",
+  "compatibility_flags": ["nodejs_compat"],
+  "name": "theme-memories",
+  "main": "./dist/_worker.js/index.js",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+  "kv_namespaces": [
+    {
+      "binding": "THEME_MEMORIES_SESSION",
+      "id": "ee946a242fc4415e8f8e59b9458d90db",
+    },
+  ],
+  "secrets_store_secrets": [
+    {
+      "binding": "OPENWEATHERMAP_APIKEY",
+      "store_id": "d8038e62b04b4974adbe1eeec64659a9",
+      "secret_name": "OPENWEATHERMAP",
+    },
+  ],
+  "d1_databases": [
+    {
+      "binding": "THEME_MEMORIES_SESSION_DB",
+      "database_name": "theme-memories-session",
+      "database_id": "ac78ae42-0fe7-463d-a134-7c99328868b5",
+    },
+  ],
+}
