@@ -3,5 +3,5 @@
 @import "@fontsource/noto-serif-sc/400.css";
 
 @theme {
-  --font-display: "Shippori Mincho", "Noto Serif SC";
+  --font-display: "Shippori Mincho", "Noto Serif SC", serif;
 }
