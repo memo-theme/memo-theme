@@ -30,6 +30,7 @@
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
+    "@fontsource/noto-serif-sc": "^5.2.8",
     "@fontsource/shippori-mincho": "^5.2.8",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.1",
