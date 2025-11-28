@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { hash, argon2id } from "argon2";
+import { hash } from "argon2";
 import { MongoClient } from "mongodb";
 import { env } from "cloudflare:workers";
 
@@ -25,15 +25,7 @@ try {
   for (const post of passwordProtectedPosts) {
     const { slug, password } = post.data;
     if (slug && password) {
-      const hashedPassword = await hash(password, {
-        type: argon2id,
-        timeCost: 3,
-        memoryCost: 65536,
-        parallelism: 4,
-        hashLength: 32,
-        saltLength: 16,
-        encode: true,
-      });
+      const hashedPassword = await hash(password);
       await collection.updateOne(
         { slug },
         { $set: { hash: hashedPassword } },
