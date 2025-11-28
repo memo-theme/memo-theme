@@ -22,7 +22,8 @@
     "astro": "astro",
     "deploy": "astro build && wrangler deploy",
     "cf-typegen": "wrangler types",
-    "prepare": "husky"
+    "prepare": "husky",
+    "hashpwd": "node scripts/hash_password.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
