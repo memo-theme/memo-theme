@@ -1,4 +1,5 @@
 import type { AstroIntegration } from "astro";
+import { getCollection } from "astro:content";
 import { hash } from "argon2";
 import { MongoClient } from "mongodb";
 
@@ -7,9 +8,6 @@ export default function hashPasswords(): AstroIntegration {
     name: "hash-passwords",
     hooks: {
       "astro:build:start": async () => {
-        // Moved import here to avoid errors with `astro check`
-        const { getCollection } = await import("astro:content");
-
         console.log("Starting password hashing...");
 
         const mongodbUri = import.meta.env.MONGODB_URI;
