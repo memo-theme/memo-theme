@@ -35,8 +35,10 @@
     "@fontsource/shippori-mincho": "^5.2.8",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.2",
+    "gray-matter": "^4.0.3",
     "mongodb": "^7.0.0",
     "sharp": "^0.34.5",
+    "slugify": "^1.6.6",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   },
