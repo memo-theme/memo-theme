@@ -45,11 +45,6 @@
       "store_id": "d8038e62b04b4974adbe1eeec64659a9",
       "secret_name": "OPENWEATHERMAP",
     },
-    {
-      "binding": "MONGODB_URI",
-      "store_id": "d8038e62b04b4974adbe1eeec64659a9",
-      "secret_name": "MONGODB",
-    },
   ],
   "d1_databases": [
     {
