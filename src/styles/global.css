@@ -80,6 +80,13 @@ a:hover {
   color: var(--accent-dark);
 }
 
+a:focus {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
+
+  /* You may also opt for a background or underline change */
+}
+
 p {
   @apply mb-4;
 }
