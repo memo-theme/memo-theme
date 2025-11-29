@@ -30,7 +30,7 @@ interface WeatherData {
 }
 ---
 
-<div id="weather">
+<div id="weather" style="text-align: center;">
   <p>Loading weather...</p>
 </div>
 
@@ -105,11 +105,11 @@ interface WeatherData {
 
       if (weatherElement) {
         weatherElement.innerHTML = `
-          <div>
+          <div style="text-align: center;">
             <p>Coordinates: ${lat}, ${lon}</p>
             <p>Timezone: ${timezone} (UTC+${timezone_offset / 3600})</p>
             <p>Last updated: ${dt}</p>
-            <p style="display: flex; align-items: center;">
+            <p style="display: flex; align-items: center; justify-content: center;">
               <img src="${iconUrl}" alt="${weatherDescription}" width="50" height="50" />
               <span>${temperature}°C, ${weatherDescription}</span>
             </p>
