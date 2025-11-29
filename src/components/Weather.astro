@@ -28,7 +28,7 @@ interface WeatherData {
   };
 }
 
-const response = await fetch("/api/weather");
+const response = await fetch(new URL("/api/weather", Astro.url.origin));
 const data: WeatherData = await response.json();
 const weather = data.current;
 const lat = data.lat;
