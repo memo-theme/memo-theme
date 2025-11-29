@@ -1,8 +1,10 @@
 ---
+import Weather from "./Weather.astro";
 const today = new Date();
 ---
 
 <footer>
+  <Weather />
   &copy; {today.getFullYear()} Your name here. All rights reserved.
   <div class="social-links">
     <a href="https://m.webtoo.ls/@astro" target="_blank">
