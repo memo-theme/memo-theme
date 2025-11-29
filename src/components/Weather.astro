@@ -1,4 +1,5 @@
 ---
+// The WeatherData interface is used by the client-side script
 interface WeatherData {
   lat: number;
   lon: number;
@@ -27,78 +28,10 @@ interface WeatherData {
     }[];
   };
 }
-
-const response = await fetch(new URL("/api/weather", Astro.url.origin));
-const data: WeatherData = await response.json();
-const weather = data.current;
-const lat = data.lat;
-const lon = data.lon;
-const timezone = data.timezone;
-const timezone_offset = data.timezone_offset;
-const dt = new Date(weather.dt * 1000).toLocaleString();
-const sunrise = new Date(weather.sunrise * 1000).toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-const sunset = new Date(weather.sunset * 1000).toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-const temperature = Math.round(weather.temp);
-const feelsLike = Math.round(weather.feels_like);
-const pressure = weather.pressure;
-const humidity = weather.humidity;
-const dew_point = weather.dew_point;
-const uvi = weather.uvi;
-const clouds = weather.clouds;
-const visibility = weather.visibility;
-const wind_speed = weather.wind_speed;
-const wind_deg = weather.wind_deg;
-const wind_gust = weather.wind_gust;
-const weather_id = weather.weather[0].id;
-const weather_main = weather.weather[0].main;
-const weatherDescription = weather.weather[0].description;
-const weatherIcon = weather.weather[0].icon;
-const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
 ---
 
 <div id="weather">
-  {
-    weather ? (
-      <div>
-        <p>
-          Coordinates: {lat}, {lon}
-        </p>
-        <p>
-          Timezone: {timezone} (UTC+{timezone_offset / 3600})
-        </p>
-        <p>Last updated: {dt}</p>
-        <p style="display: flex; align-items: center;">
-          <img src={iconUrl} alt={weatherDescription} width="50" height="50" />
-          <span>
-            {temperature}°C, {weatherDescription}
-          </span>
-        </p>
-        <p>Feels like: {feelsLike}°C</p>
-        <p>Humidity: {humidity}%</p>
-        <p>Dew Point: {dew_point}°C</p>
-        <p>UV Index: {uvi}</p>
-        <p>Cloudiness: {clouds}%</p>
-        <p>Visibility: {visibility}m</p>
-        <p>
-          Wind: {wind_speed} m/s from {wind_deg}°
-        </p>
-        <p>Wind Gust: {wind_gust} m/s</p>
-        <p>Pressure: {pressure} hPa</p>
-        <p>Sunrise: {sunrise}</p>
-        <p>Sunset: {sunset}</p>
-        <p>Weather ID: {weather_id}</p>
-        <p>Weather Main: {weather_main}</p>
-      </div>
-    ) : (
-      <p>Loading weather...</p>
-    )
-  }
+  <p>Loading weather...</p>
 </div>
 
 <script>
@@ -135,6 +68,9 @@ const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
     const weatherElement = document.getElementById("weather");
     try {
       const response = await fetch("/api/weather");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.statusText}`);
+      }
       const data: WeatherData = await response.json();
       const weather = data.current;
       const lat = data.lat;
