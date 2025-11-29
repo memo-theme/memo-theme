@@ -11,7 +11,12 @@ interface ValidationResult {
   verified: boolean;
 }
 
-// Add `redirect` to the function signature to get the helper
+// Handle GET requests by redirecting to the homepage. This resolves the build warning.
+export const GET: APIRoute = ({ redirect }) => {
+  return redirect("/");
+};
+
+// Handle POST requests for password validation
 export const POST: APIRoute = async ({
   request,
   cookies,
