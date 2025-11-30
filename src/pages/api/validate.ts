@@ -103,19 +103,6 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
       );
     }
 
-    if (!validationResponse.ok) {
-      const errorBody = await validationResponse.text();
-      // Log raw errorBody for debugging, but do not expose it to client
-      console.error("Upstream error:", errorBody);
-      return new Response(
-        JSON.stringify({ error: "Error validating password" }),
-        {
-          status: validationResponse.status,
-          headers: { "Content-Type": "application/json" },
-        },
-      );
-    }
-
     const validationResult =
       (await validationResponse.json()) as ValidationResult;
 
@@ -135,12 +122,14 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
         status: 500,
       });
     }
-    if (!jwtSecret) {
+    // Ensure JWT secret meets minimum length requirements (at least 32 chars for HS256)
+    if (!jwtSecret || jwtSecret.length < 32) {
       console.error(
-        "JWT_SECRET is not configured in Cloudflare environment. Expected environment variable: JWT_SECRET",
+        `JWT_SECRET length is too short (${jwtSecret ? jwtSecret.length : 0} chars). Must be at least 32 characters for HS256.`,
       );
       return new Response(JSON.stringify({ error: "Internal Server Error" }), {
         status: 500,
+        headers: { "Content-Type": "application/json" },
       });
     }
     const secret = new TextEncoder().encode(jwtSecret);
