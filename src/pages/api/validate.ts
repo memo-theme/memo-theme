@@ -31,17 +31,30 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     // The presence of the cf_clearance cookie is our pre-clearance check.
     // No JWT verification is needed here anymore.
 
-    const { slug, plaintext } = (await request.json()) as RequestBody;
+    const body = (await request.json()) as RequestBody;
 
-    if (!slug || !plaintext) {
+    // Validate JSON structure and types
+    if (
+      typeof body !== "object" ||
+      body === null ||
+      typeof body.slug !== "string" ||
+      body.slug.trim() === "" ||
+      typeof body.plaintext !== "string" ||
+      body.plaintext.trim() === ""
+    ) {
       return new Response(
-        JSON.stringify({ error: "Missing slug or plaintext" }),
+        JSON.stringify({
+          error:
+            "Invalid request body: 'slug' and 'plaintext' must be non-empty strings",
+        }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
         },
       );
     }
+
+    const { slug, plaintext } = body;
 
     const validationResponse = await fetch("https://validate.332712.xyz/api", {
       method: "POST",
@@ -54,10 +67,15 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
 
     if (!validationResponse.ok) {
       const errorBody = await validationResponse.text();
-      return new Response(errorBody, {
-        status: validationResponse.status,
-        headers: { "Content-Type": "application/json" },
-      });
+      // Log raw errorBody for debugging, but do not expose it to client
+      console.error("Upstream error:", errorBody);
+      return new Response(
+        JSON.stringify({ error: "Error validating password" }),
+        {
+          status: validationResponse.status,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
     }
 
     const validationResult =
@@ -69,7 +87,9 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
 
     const jwtSecret = await locals.runtime.env.JWT_SECRET.get();
     if (!jwtSecret) {
-      console.error("JWT_SECRET is not configured in Cloudflare environment.");
+      console.error(
+        "JWT_SECRET is not configured in Cloudflare environment. Expected environment variable: JWT_SECRET",
+      );
       return new Response(JSON.stringify({ error: "Internal Server Error" }), {
         status: 500,
       });
