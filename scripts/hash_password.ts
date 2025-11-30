@@ -7,7 +7,25 @@ import slugify from "slugify";
 
 async function getPostsFromFiles() {
   const postsDir = path.join(process.cwd(), "src/content/blog");
-  const files = await fs.readdir(postsDir);
+  let files: string[] = [];
+  try {
+    files = (await fs.readdir(postsDir)).filter((file) => {
+      const ext = path.extname(file).toLowerCase();
+      return ext === ".md";
+    });
+  } catch (err: unknown) {
+    if (
+      err &&
+      typeof err === "object" &&
+      "code" in err &&
+      (err as { code: string }).code === "ENOENT"
+    ) {
+      console.error(`Posts directory not found: ${postsDir}`);
+      return [];
+    } else {
+      throw err;
+    }
+  }
 
   const posts = [];
   for (const file of files) {
@@ -38,10 +56,6 @@ async function main() {
     return;
   }
 
-  console.log(
-    `Found ${passwordProtectedPosts.length} password protected posts.`,
-  );
-
   const mongodbUri = process.env.MONGODB_URI;
   if (!mongodbUri) {
     console.error("MONGODB_URI environment variable not set.");
@@ -61,16 +75,12 @@ async function main() {
     for (const post of passwordProtectedPosts) {
       const { password } = post.data;
       const { slug } = post;
-      if (password) {
-        console.log(`Processing post with slug: ${slug}`);
-        const hashedPassword = await hash(password);
-        await collection.updateOne(
-          { slug },
-          { $set: { hash: hashedPassword } },
-          { upsert: true },
-        );
-        console.log(`Hashed and stored password for slug: ${slug}`);
-      }
+      const hashedPassword = await hash(password);
+      await collection.updateOne(
+        { slug },
+        { $set: { hash: hashedPassword } },
+        { upsert: true },
+      );
     }
     console.log("Finished hashing all passwords.");
   } catch (error) {
