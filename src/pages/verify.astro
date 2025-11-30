@@ -1,0 +1,124 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+
+const { searchParams } = new URL(Astro.request.url);
+const slug = searchParams.get("slug");
+const title = searchParams.get("title");
+
+if (!slug || !title) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Password for ${title}`}
+      description="Password entry page"
+    />
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer></script>
+  </head>
+  <body>
+    <Header />
+    <main class="container">
+      <h1 class="text-2xl font-bold mb-4">
+        Please enter the password for post "{title}"
+      </h1>
+      <form id="password-form" class="space-y-4">
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700"
+            >Password:</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAACDwdS7Lh2ryNIld"></div>
+        <div>
+          <button
+            type="submit"
+            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+      <p id="error-message" class="mt-2 text-sm text-red-600"></p>
+    </main>
+    <Footer />
+    <script is:inline define:vars={{ slug }}>
+      document
+        .getElementById("password-form")
+        ?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const form = event.target;
+          const passwordInput = form.elements.namedItem("password");
+          const turnstileResponse = form.querySelector(
+            '[name="cf-turnstile-response"]'
+          )?.value;
+          const errorMessage = document.getElementById("error-message");
+
+          if (!turnstileResponse) {
+            errorMessage.textContent = "Please complete the CAPTCHA.";
+            return;
+          }
+
+          try {
+            const captchaResponse = await fetch("/api/captcha", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                "cf-turnstile-response": turnstileResponse,
+              }),
+            });
+
+            if (!captchaResponse.ok) {
+              const data = await captchaResponse.json();
+              errorMessage.textContent =
+                data.error || "Failed CAPTCHA verification.";
+              return;
+            }
+
+            const validateResponse = await fetch("/api/validate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                slug: slug,
+                plaintext: passwordInput.value,
+              }),
+            });
+
+            const validateData = await validateResponse.json();
+
+            if (validateResponse.ok && validateData.success) {
+              window.location.href = `/blog/${slug}`;
+            } else {
+              errorMessage.textContent =
+                validateData.error || "Invalid password.";
+            }
+          } catch (error) {
+            console.error("Error during validation:", error);
+            errorMessage.textContent = "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>
