@@ -1,7 +1,5 @@
 import type { APIContext } from "astro";
 
-export const prerender = false;
-
 export async function GET({ request, locals }: APIContext) {
   const cache = await caches.open("weather");
   const cachedResponse = await cache.match(request.url);
