@@ -46,7 +46,8 @@
       }
       const data: WeatherData = await response.json();
       const currentWeather = data.current;
-      const { lat, lon, timezone, timezone_offset } = data;
+      const { lat, lon, timezone } = data;
+      const timezoneOffset = data.timezone_offset;
       const dt = new Date(currentWeather.dt * 1000).toLocaleString();
       const sunrise = new Date(
         currentWeather.sunrise * 1000
@@ -101,7 +102,9 @@
         coordsP.textContent = `Coordinates: ${lat}, ${lon}`;
         container.appendChild(coordsP);
         const timezoneP = document.createElement("p");
-        timezoneP.textContent = `Timezone: ${timezone} (UTC+${timezone_offset / 3600})`;
+        const offsetHours = timezoneOffset / 3600;
+        const offsetSign = offsetHours >= 0 ? "+" : "-";
+        timezoneP.textContent = `Timezone: ${timezone} (UTC${offsetSign}${Math.abs(offsetHours)})`;
         container.appendChild(timezoneP);
         const updatedP = document.createElement("p");
         updatedP.textContent = `Last updated: ${dt}`;
@@ -144,7 +147,7 @@
         windP.textContent = `Wind: ${windSpeed} m/s from ${windDeg}°`;
         container.appendChild(windP);
         const windGustP = document.createElement("p");
-        windGustP.textContent = `Wind Gust: ${windGust} m/s`;
+        windGustP.textContent = `Wind Gust: ${windGust !== undefined ? windGust : "N/A"} m/s`;
         container.appendChild(windGustP);
         const pressureP = document.createElement("p");
         pressureP.textContent = `Pressure: ${pressure} hPa`;
