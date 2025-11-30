@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { SignJWT } from "jose";
 
+export const prerender = false;
+
 // Define types for incoming and external data
 interface RequestBody {
   slug: string;
