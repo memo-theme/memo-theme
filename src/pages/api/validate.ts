@@ -19,18 +19,13 @@ export const GET: APIRoute = ({ redirect }) => {
 };
 
 // Handle POST requests for password validation
-export const POST: APIRoute = async ({
-  request,
-  cookies,
-  locals,
-  redirect,
-}) => {
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
   try {
     const clearanceCookie = cookies.get("cf_clearance");
 
     if (!clearanceCookie) {
       console.log("No cf_clearance cookie found");
-      return redirect("/401");
+      return new Response("Unauthorized", { status: 401 });
     }
 
     // The presence of the cf_clearance cookie is our pre-clearance check.
@@ -69,7 +64,7 @@ export const POST: APIRoute = async ({
       (await validationResponse.json()) as ValidationResult;
 
     if (!validationResult.verified) {
-      return redirect("/401");
+      return new Response("Unauthorized", { status: 401 });
     }
 
     const jwtSecret = await locals.runtime.env.JWT_SECRET.get();
