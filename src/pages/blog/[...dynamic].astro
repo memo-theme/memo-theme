@@ -3,26 +3,17 @@ import { type CollectionEntry, getCollection, render } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
 import { jwtVerify } from "jose";
 
-// 1. Statically generate paths for all public posts (those without a password).
-export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.password);
-  return posts.map((post) => ({
-    params: { slug: post.data.slug || post.id },
-    props: post,
-  }));
-}
-
 export const prerender = false;
 
 type Props = CollectionEntry<"blog">;
 
 // 2. Handle page requests for both static and server-rendered pages.
-const { slug } = Astro.params;
+const { dynamic } = Astro.params;
 
 // Astro's getCollection automatically handles slugification from file names,
 // which is consistent with the logic in your `scripts/hash_password.ts` file.
 const post = (await getCollection("blog")).find(
-  (p) => p.data.slug === slug || p.id === slug
+  (p) => p.data.slug === dynamic || p.id === dynamic
 );
 
 if (!post) {
