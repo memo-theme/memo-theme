@@ -9,7 +9,6 @@ export default defineConfig({
   base: "/",
   trailingSlash: "never",
   prefetch: true,
-  output: "server",
   adapter: cloudflare({
     imageService: "cloudflare",
   }),
