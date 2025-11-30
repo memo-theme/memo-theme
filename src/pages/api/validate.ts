@@ -26,7 +26,16 @@ export const POST: APIRoute = async ({
   redirect,
 }) => {
   try {
-    // Use the type assertion for the request body
+    const clearanceCookie = cookies.get("cf_clearance");
+
+    if (!clearanceCookie) {
+      console.log("No cf_clearance cookie found");
+      return redirect("/401");
+    }
+
+    // The presence of the cf_clearance cookie is our pre-clearance check.
+    // No JWT verification is needed here anymore.
+
     const { slug, plaintext } = (await request.json()) as RequestBody;
 
     if (!slug || !plaintext) {
@@ -56,31 +65,20 @@ export const POST: APIRoute = async ({
       });
     }
 
-    // Use the type assertion for the validation result
     const validationResult =
       (await validationResponse.json()) as ValidationResult;
 
     if (!validationResult.verified) {
-      // On invalid password, redirect to the custom 401 page.
       return redirect("/401");
     }
 
-    // 1. Fetch the secret from Cloudflare's secret store using `locals`
-    if (!locals.runtime?.env?.JWT_SECRET) {
-      console.error("JWT_SECRET binding not found.");
-      return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-        status: 500,
-      });
-    }
     const jwtSecret = await locals.runtime.env.JWT_SECRET.get();
-
     if (!jwtSecret) {
       console.error("JWT_SECRET is not configured in Cloudflare environment.");
       return new Response(JSON.stringify({ error: "Internal Server Error" }), {
         status: 500,
       });
     }
-
     const secret = new TextEncoder().encode(jwtSecret);
     const alg = "HS256";
 
@@ -88,7 +86,6 @@ export const POST: APIRoute = async ({
       .setProtectedHeader({ alg })
       .setExpirationTime("4h")
       .setIssuedAt()
-      .setAudience("example.com")
       .setSubject(slug)
       .sign(secret);
 
