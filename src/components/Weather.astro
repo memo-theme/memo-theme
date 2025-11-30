@@ -71,9 +71,9 @@
       const visibility = currentWeather.visibility;
       const windSpeed = currentWeather.wind_speed;
       const windDeg = currentWeather.wind_deg;
-      const wind_gust = currentWeather.wind_gust;
-      const weather_id = currentWeather.weather[0].id;
-      const weather_main = currentWeather.weather[0].main;
+      const windGust = currentWeather.wind_gust;
+      const weatherId = currentWeather.weather[0].id;
+      const weatherMain = currentWeather.weather[0].main;
       const weatherDescription = currentWeather.weather[0].description;
       const weatherIcon = currentWeather.weather[0].icon;
       const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
@@ -95,12 +95,12 @@
             <p>Cloudiness: ${clouds}%</p>
             <p>Visibility: ${visibility}m</p>
             <p>Wind: ${windSpeed} m/s from ${windDeg}°</p>
-            <p>Wind Gust: ${wind_gust} m/s</p>
+            <p>Wind Gust: ${windGust} m/s</p>
             <p>Pressure: ${pressure} hPa</p>
             <p>Sunrise: ${sunrise}</p>
             <p>Sunset: ${sunset}</p>
-            <p>Weather ID: ${weather_id}</p>
-            <p>Weather Main: ${weather_main}</p>
+            <p>Weather ID: ${weatherId}</p>
+            <p>Weather Main: ${weatherMain}</p>
           </div>
         `;
       }
