@@ -1,17 +1,73 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
+import { jwtVerify } from "jose";
 
+// 1. Statically generate paths for all public posts (those without a password).
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("blog", ({ data }) => !data.password);
   return posts.map((post) => ({
     params: { slug: post.data.slug || post.id },
     props: post,
   }));
 }
+
 type Props = CollectionEntry<"blog">;
 
-const post = Astro.props;
+// 2. Handle page requests for both static and server-rendered pages.
+const { slug } = Astro.params;
+
+// Astro's getCollection automatically handles slugification from file names,
+// which is consistent with the logic in your `scripts/hash_password.ts` file.
+const post = (await getCollection("blog")).find(
+  (p) => p.data.slug === slug || p.id === slug
+);
+
+if (!post) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const { env } = Astro.locals.runtime;
+const actual_slug = post.data.slug || post.id;
+// 3. If the post has a password, it must be server-rendered and requires authentication.
+if (post.data.password) {
+  const jwt_secret = await env.JWT_SECRET.get();
+  const secret = new TextEncoder().encode(jwt_secret);
+  const token = Astro.cookies.get(`post_access_${actual_slug}`)?.value;
+
+  let isAuthenticated = false;
+
+  if (token) {
+    try {
+      // `jwtVerify` is a robust check that handles multiple verifications at once:
+      // 1. Signature: Verifies the token was signed with our secret.
+      // 2. Expiration: Checks the 'exp' claim to ensure the token is not expired.
+      // 3. Subject: We require the 'sub' claim to match the post's slug,
+      //    ensuring this JWT is valid *only for this specific post*.
+      await jwtVerify(token, secret, {
+        subject: actual_slug,
+      });
+
+      // If jwtVerify completes without throwing, the user is authenticated.
+      isAuthenticated = true;
+    } catch (err) {
+      // If the token is expired, has an invalid signature, or the wrong subject,
+      // an error will be thrown, and we'll proceed as unauthenticated.
+      console.log("JWT verification failed, redirecting to /verify");
+    }
+  }
+
+  // 4. If the user is not authenticated, redirect them to the password page.
+  if (!isAuthenticated) {
+    return Astro.redirect(
+      `/verify?${new URLSearchParams({
+        slug: actual_slug,
+        title: post.data.title,
+      }).toString()}`
+    );
+  }
+}
+
 const { Content } = await render(post);
 ---
 
