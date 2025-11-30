@@ -12,6 +12,8 @@ export async function getStaticPaths() {
   }));
 }
 
+export const prerender = false;
+
 type Props = CollectionEntry<"blog">;
 
 // 2. Handle page requests for both static and server-rendered pages.
