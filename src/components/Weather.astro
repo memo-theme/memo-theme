@@ -105,80 +105,43 @@
 
       if (weatherElement) {
         weatherElement.innerHTML = ""; // Clear previous contents
-        const container = document.createElement("div");
-        container.style.textAlign = "center";
-        const coordsP = document.createElement("p");
-        coordsP.textContent = `Coordinates: ${lat}, ${lon}`;
-        container.appendChild(coordsP);
-        const timezoneP = document.createElement("p");
+        const p = document.createElement("p");
+
         const offsetHours = timezoneOffset / 3600;
         const offsetSign = offsetHours >= 0 ? "+" : "-";
-        timezoneP.textContent = `Timezone: ${timezone} (UTC${offsetSign}${Math.abs(offsetHours)})`;
-        container.appendChild(timezoneP);
-        const updatedP = document.createElement("p");
-        updatedP.textContent = `Last updated: ${dt}`;
-        container.appendChild(updatedP);
-        const mainP = document.createElement("p");
-        mainP.style.display = "flex";
-        mainP.style.alignItems = "center";
-        mainP.style.justifyContent = "center";
-        // Weather icon
-        const iconImg = document.createElement("img");
-        iconImg.src = iconUrl;
-        iconImg.alt = weatherDescription;
-        iconImg.width = 30;
-        iconImg.height = 30;
-        mainP.appendChild(iconImg);
-        // Weather description and temperature
-        const descSpan = document.createElement("span");
-        descSpan.textContent = `${temperature}°C, ${weatherDescription}`;
-        mainP.appendChild(descSpan);
-        container.appendChild(mainP);
-        const feelsLikeP = document.createElement("p");
-        feelsLikeP.textContent = `Feels like: ${feelsLike}°C`;
-        container.appendChild(feelsLikeP);
-        const humidityP = document.createElement("p");
-        humidityP.textContent = `Humidity: ${humidity}%`;
-        container.appendChild(humidityP);
-        const dewPointP = document.createElement("p");
-        dewPointP.textContent = `Dew Point: ${dewPoint}°C`;
-        container.appendChild(dewPointP);
-        const uviP = document.createElement("p");
-        uviP.textContent = `UV Index: ${uvi}`;
-        container.appendChild(uviP);
-        const cloudsP = document.createElement("p");
-        cloudsP.textContent = `Cloudiness: ${clouds}%`;
-        container.appendChild(cloudsP);
-        const visibilityP = document.createElement("p");
-        visibilityP.textContent = `Visibility: ${visibility}m`;
-        container.appendChild(visibilityP);
-        const windP = document.createElement("p");
-        windP.textContent = `Wind: ${windSpeed} m/s from ${windDeg}°`;
-        container.appendChild(windP);
-        const windGustP = document.createElement("p");
-        windGustP.textContent = `Wind Gust: ${windGust !== undefined ? windGust : "N/A"} m/s`;
-        container.appendChild(windGustP);
-        const pressureP = document.createElement("p");
-        pressureP.textContent = `Pressure: ${pressure} hPa`;
-        container.appendChild(pressureP);
-        const sunriseP = document.createElement("p");
-        sunriseP.textContent = `Sunrise: ${sunrise}`;
-        container.appendChild(sunriseP);
-        const sunsetP = document.createElement("p");
-        sunsetP.textContent = `Sunset: ${sunset}`;
-        container.appendChild(sunsetP);
-        const weatherIdP = document.createElement("p");
-        weatherIdP.textContent = `Weather ID: ${weatherId}`;
-        container.appendChild(weatherIdP);
-        const weatherMainP = document.createElement("p");
-        weatherMainP.textContent = `Weather Main: ${weatherMain}`;
-        container.appendChild(weatherMainP);
-        weatherElement.appendChild(container);
+
+        const iconImg = `<img src="${iconUrl}" alt="${weatherDescription}" width="30" height="30" style="vertical-align: middle;">`;
+
+        p.innerHTML = `
+          Coordinates: ${lat}, ${lon}<br>
+          Timezone: ${timezone} (UTC${offsetSign}${Math.abs(offsetHours)})<br>
+          Last updated: ${dt}<br>
+          ${iconImg} ${temperature}°C, ${weatherDescription}<br>
+          Feels like: ${feelsLike}°C<br>
+          Humidity: ${humidity}%<br>
+          Dew Point: ${dewPoint}°C<br>
+          UV Index: ${uvi}<br>
+          Cloudiness: ${clouds}%<br>
+          Visibility: ${visibility}m<br>
+          Wind: ${windSpeed} m/s from ${windDeg}°<br>
+          Wind Gust: ${windGust !== undefined ? windGust : "N/A"} m/s<br>
+          Pressure: ${pressure} hPa<br>
+          Sunrise: ${sunrise}<br>
+          Sunset: ${sunset}<br>
+          Weather ID: ${weatherId}<br>
+          Weather Main: ${weatherMain}
+        `;
+
+        weatherElement.appendChild(p);
       }
     } catch (error) {
       if (weatherElement) {
-        weatherElement.innerHTML =
-          "<p>Could not fetch weather. Please check your connection, or try again later.</p>";
+        // Clear previous contents
+        weatherElement.textContent = "";
+        const errorP = document.createElement("p");
+        errorP.textContent =
+          "Could not fetch weather. Please check your connection, or try again later.";
+        weatherElement.appendChild(errorP);
       }
       console.error("Failed to fetch weather:", error);
     }

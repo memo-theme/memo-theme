@@ -117,10 +117,7 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     try {
       jwtSecret = await locals.runtime.env.JWT_SECRET.get();
     } catch (jwtSecretError) {
-      console.error(
-        "Error retrieving JWT_SECRET from Cloudflare environment (expected environment variable: JWT_SECRET):",
-        jwtSecretError,
-      );
+      console.error("Error retrieving JWT secret:", jwtSecretError);
       return new Response(JSON.stringify({ error: "Internal Server Error" }), {
         status: 500,
       });
