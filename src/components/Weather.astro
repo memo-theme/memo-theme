@@ -3,7 +3,7 @@
 // The WeatherData interface is defined and used in the client-side script below.
 ---
 
-<div id="weather" style="text-align: center;">
+<div id="weather">
   <p>Loading weather...</p>
 </div>
 
@@ -97,7 +97,6 @@
       if (weatherElement) {
         weatherElement.innerHTML = ""; // Clear previous contents
         const container = document.createElement("div");
-        container.style.textAlign = "center";
         const coordsP = document.createElement("p");
         coordsP.textContent = `Coordinates: ${lat}, ${lon}`;
         container.appendChild(coordsP);
@@ -110,9 +109,7 @@
         updatedP.textContent = `Last updated: ${dt}`;
         container.appendChild(updatedP);
         const mainP = document.createElement("p");
-        mainP.style.display = "flex";
-        mainP.style.alignItems = "center";
-        mainP.style.justifyContent = "center";
+        mainP.className = "main-info";
         // Weather icon
         const iconImg = document.createElement("img");
         iconImg.src = iconUrl;
