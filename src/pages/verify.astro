@@ -6,7 +6,6 @@ import Header from "../components/Header.astro";
 
 const { searchParams } = new URL(Astro.request.url);
 const slug = searchParams.get("slug");
-
 const title = searchParams.get("title");
 
 if (!slug || !title) {
