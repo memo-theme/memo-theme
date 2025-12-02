@@ -93,6 +93,7 @@ if (!slug || !title) {
               const data = await captchaResponse.json();
               errorMessage.textContent =
                 data.error || "Failed CAPTCHA verification.";
+              turnstile.reset();
               return;
             }
 
@@ -114,10 +115,12 @@ if (!slug || !title) {
             } else {
               errorMessage.textContent =
                 validateData.error || "Invalid password.";
+              turnstile.reset();
             }
           } catch (error) {
             console.error("Error during validation:", error);
             errorMessage.textContent = "An error occurred. Please try again.";
+            turnstile.reset();
           }
         });
     </script>
