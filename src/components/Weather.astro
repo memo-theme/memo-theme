@@ -17,6 +17,8 @@
 </style>
 
 <script>
+  const DEFAULT_DESCRIPTION = "晴天";
+  const DEFAULT_ICON = "01d";
   interface WeatherData {
     lat: number;
     lon: number;
@@ -82,9 +84,9 @@
       const windSpeed = currentWeather.wind_speed;
       const windDeg = currentWeather.wind_deg;
       const windGust = currentWeather.wind_gust;
-      let weatherDescription = "晴天";
-      let weatherIconRaw = "01d";
-      let weatherIcon = "01d"; // Use a default icon code
+      let weatherDescription = DEFAULT_DESCRIPTION;
+      let weatherIconRaw = DEFAULT_ICON;
+      let weatherIcon = DEFAULT_ICON; // Use a default icon code
       if (
         Array.isArray(currentWeather.weather) &&
         currentWeather.weather.length > 0 &&
