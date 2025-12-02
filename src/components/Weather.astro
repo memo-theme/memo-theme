@@ -7,6 +7,15 @@
   <p>Loading weather...</p>
 </div>
 
+<style>
+  #weather {
+    font-size: 0.8rem;
+  }
+  #weather p {
+    margin: 0.2em 0;
+  }
+</style>
+
 <script>
   interface WeatherData {
     lat: number;
@@ -117,8 +126,8 @@
         const iconImg = document.createElement("img");
         iconImg.src = iconUrl;
         iconImg.alt = weatherDescription;
-        iconImg.width = 50;
-        iconImg.height = 50;
+        iconImg.width = 30;
+        iconImg.height = 30;
         mainP.appendChild(iconImg);
         // Weather description and temperature
         const descSpan = document.createElement("span");
