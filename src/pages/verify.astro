@@ -3,17 +3,25 @@ export const prerender = false;
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import { getCollection } from "astro:content";
+import MarkdownIt from "markdown-it";
+
+const md = new MarkdownIt();
 
 const { searchParams } = new URL(Astro.request.url);
 const slug = searchParams.get("slug");
-const title = searchParams.get("title");
 
-if (!slug || !title) {
-  return new Response(null, {
-    status: 404,
-    statusText: "Not Found",
-  });
+if (!slug) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
 }
+
+const posts = await getCollection("blog");
+const post = posts.find((p) => p.data.slug === slug || p.id === slug);
+
+const title = post?.data.title || "a post";
+const question =
+  post?.data.question || "Please enter the password to continue.";
+const renderedQuestion = question ? md.render(question) : null;
 ---
 
 <!doctype html>
@@ -35,6 +43,13 @@ if (!slug || !title) {
       <h1 class="text-2xl font-bold mb-4">
         Please enter the password for post "{title}"
       </h1>
+      {
+        renderedQuestion && (
+          <div class="mb-4 p-4 bg-gray-100 rounded-md">
+            <div class="prose prose-sm" set:html={renderedQuestion} />
+          </div>
+        )
+      }
       <form id="password-form" class="space-y-4">
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700"

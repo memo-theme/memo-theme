@@ -40,11 +40,6 @@
   ],
   "secrets_store_secrets": [
     {
-      "binding": "OPENWEATHERMAP_APIKEY",
-      "store_id": "d8038e62b04b4974adbe1eeec64659a9",
-      "secret_name": "OPENWEATHERMAP",
-    },
-    {
       "binding": "JWT_SECRET",
       "store_id": "d8038e62b04b4974adbe1eeec64659a9",
       "secret_name": "JWT",

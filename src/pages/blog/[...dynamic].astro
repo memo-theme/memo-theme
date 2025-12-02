@@ -55,7 +55,6 @@ if (post.data.password) {
     return Astro.redirect(
       `/verify?${new URLSearchParams({
         slug: actual_slug,
-        title: post.data.title,
       }).toString()}`
     );
   }
