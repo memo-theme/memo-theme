@@ -110,13 +110,13 @@
         const offsetHours = timezoneOffset / 3600;
         const offsetSign = offsetHours >= 0 ? "+" : "-";
 
-        const iconImg = `<img src="${iconUrl}" alt="${weatherDescription}" width="30" height="30" style="vertical-align: middle;">`;
+        const iconImg = `<img src="${iconUrl}" alt="${weatherDescription}" width="30" height="30">`;
 
         p.innerHTML = `
           Coordinates: ${lat}, ${lon}<br>
           Timezone: ${timezone} (UTC${offsetSign}${Math.abs(offsetHours)})<br>
           Last updated: ${dt}<br>
-          ${iconImg} ${temperature}°C, ${weatherDescription}<br>
+          <span style="display: inline-flex; align-items: center; justify-content: center; gap: 0.25em;">${iconImg} ${temperature}°C, ${weatherDescription}</span><br>
           Feels like: ${feelsLike}°C<br>
           Humidity: ${humidity}%<br>
           Dew Point: ${dewPoint}°C<br>
