@@ -107,7 +107,10 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
       (await validationResponse.json()) as ValidationResult;
 
     if (!validationResult.verified) {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response(JSON.stringify({ error: "Invalid password." }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     let jwtSecret: string | undefined;
@@ -161,6 +164,11 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     } else {
       console.error("An unexpected and non-error object was caught:", error);
     }
-    return new Response(null, { status: 500 });
+    return new Response(
+      JSON.stringify({
+        error: "An unexpected error occurred. Please try again.",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
   }
 };
