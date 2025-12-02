@@ -113,10 +113,10 @@
         const iconImg = `<img src="${iconUrl}" alt="${weatherDescription}" width="30" height="30">`;
 
         p.innerHTML = `
+          <span style="display: inline-flex; align-items: center; justify-content: center; gap: 0.25em;">${iconImg} ${temperature}°C, ${weatherDescription}</span><br>
           Coordinates: ${lat}, ${lon}<br>
           Timezone: ${timezone} (UTC${offsetSign}${Math.abs(offsetHours)})<br>
           Last updated: ${dt}<br>
-          <span style="display: inline-flex; align-items: center; justify-content: center; gap: 0.25em;">${iconImg} ${temperature}°C, ${weatherDescription}</span><br>
           Feels like: ${feelsLike}°C<br>
           Humidity: ${humidity}%<br>
           Dew Point: ${dewPoint}°C<br>
