@@ -1,166 +1,155 @@
 @import "tailwindcss";
+@import "@fontsource/shippori-mincho/400.css";
+@import "@fontsource/noto-serif-sc/400.css";
 
-@layer components {
-  .container {
-    @apply max-w-2xl mx-auto px-4;
+@theme {
+  --font-display: "Shippori Mincho", "Noto Serif SC", serif;
+  --accent: #2337ff;
+  --accent-dark: #000d8a;
+  --black: 15, 18, 25;
+  --gray: 96, 115, 159;
+  --gray-light: 229, 233, 240;
+  --gray-dark: 34, 41, 57;
+  --gray-gradient: rgb(var(--gray-light), 50%), #fff;
+  --box-shadow:
+    0 2px 6px rgb(var(--gray), 25%), 0 8px 24px rgb(var(--gray), 33%),
+    0 16px 32px rgb(var(--gray), 33%);
+}
+
+/*
+  The CSS in this style tag is based off of Bear Blog's default CSS.
+  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
+  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+ */
+
+body {
+  @apply font-display m-0 p-0 text-left bg-no-repeat text-lg;
+
+  background-image: linear-gradient(var(--gray-gradient));
+  background-size: 100% 600px;
+  overflow-wrap: break-word;
+  color: rgb(var(--gray-dark));
+  line-height: 1.7;
+}
+
+main {
+  @apply w-[720px] max-w-[calc(100%-2em)] m-auto py-12 px-4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply m-0 mb-2 leading-tight;
+
+  color: rgb(var(--black));
+}
+
+h1 {
+  @apply text-5xl;
+}
+
+h2 {
+  @apply text-4xl;
+}
+
+h3 {
+  @apply text-3xl;
+}
+
+h4 {
+  @apply text-2xl;
+}
+
+h5 {
+  @apply text-xl;
+}
+
+strong,
+b {
+  @apply font-bold;
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--accent-dark);
+}
+
+a:focus {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
+
+  /* You may also opt for a background or underline change */
+}
+
+p {
+  @apply mb-4;
+}
+
+.prose p {
+  @apply mb-8;
+}
+
+textarea {
+  @apply w-full text-base;
+}
+
+input {
+  @apply text-base;
+}
+
+table {
+  @apply w-full;
+}
+
+img {
+  @apply max-w-full h-auto rounded-lg;
+}
+
+code {
+  @apply py-0.5 px-1 rounded;
+
+  background-color: rgb(var(--gray-light));
+}
+
+pre {
+  @apply p-6 rounded-lg;
+}
+
+pre > code {
+  all: unset;
+}
+
+blockquote {
+  @apply border-l-4 border-solid m-0 pl-5 text-xl;
+
+  border-color: var(--accent);
+}
+
+hr {
+  @apply border-0 border-t border-solid;
+
+  border-top-color: rgb(var(--gray-light));
+}
+
+@media (width <= 720px) {
+  body {
+    @apply text-lg;
   }
 
   main {
-    @apply w-full max-w-3xl mx-auto;
+    @apply p-4;
   }
+}
 
-  ul {
-    @apply flex flex-wrap gap-8 list-none m-0 p-0;
-  }
+.sr-only {
+  @apply border-0 p-0 m-0 absolute h-px w-px overflow-hidden whitespace-nowrap;
 
-  ul li {
-    @apply w-[calc(50%-1rem)];
-  }
-
-  ul li * {
-    @apply no-underline transition ease-in-out duration-200;
-  }
-
-  ul li:first-child {
-    @apply w-full mb-4 text-center;
-  }
-
-  ul li:first-child img {
-    @apply w-full;
-  }
-
-  ul li:first-child .title {
-    @apply text-4xl;
-  }
-
-  ul li img {
-    @apply mb-2 rounded-lg;
-  }
-
-  ul li a {
-    @apply block;
-  }
-
-  .title {
-    @apply m-0 text-gray-900 leading-tight;
-  }
-
-  .date {
-    @apply m-0 text-gray-500;
-  }
-
-  ul li a:hover h4,
-  ul li a:hover .date {
-    @apply text-blue-500;
-  }
-
-  ul a:hover img {
-    @apply shadow-lg;
-  }
-
-  @media (width <= 720px) {
-    ul {
-      @apply gap-2;
-    }
-
-    ul li {
-      @apply w-full text-center;
-    }
-
-    ul li:first-child {
-      @apply mb-0;
-    }
-
-    ul li:first-child .title {
-      @apply text-2xl;
-    }
-  }
-
-  .hero-image {
-    @apply w-full;
-  }
-
-  .hero-image img {
-    @apply block mx-auto rounded-lg shadow-md;
-  }
-
-  .prose {
-    @apply max-w-prose mx-auto py-4 px-4 text-gray-800;
-  }
-
-  .title h1 {
-    @apply m-0 mb-2;
-  }
-
-  .last-updated-on {
-    @apply italic;
-  }
-
-  footer {
-    @apply py-8 px-4 bg-gray-100 text-gray-600 text-center;
-  }
-
-  .social-links {
-    @apply flex justify-center gap-4 mt-4;
-  }
-
-  .social-links a {
-    @apply text-gray-600 no-underline;
-  }
-
-  .social-links a:hover {
-    @apply text-gray-900;
-  }
-
-  a {
-    @apply inline-block no-underline;
-  }
-
-  a.active {
-    @apply font-bold underline;
-  }
-
-  header {
-    @apply m-0 py-0 px-4 bg-white shadow-sm;
-  }
-
-  h2 {
-    @apply m-0 text-lg;
-  }
-
-  h2 a,
-  h2 a.active {
-    @apply no-underline;
-  }
-
-  nav {
-    @apply flex items-center justify-between;
-  }
-
-  nav a {
-    @apply py-4 px-2 text-gray-900 border-b-4 border-transparent no-underline;
-  }
-
-  nav a.active {
-    @apply border-blue-500 no-underline;
-  }
-
-  .social-links,
-  .social-links a {
-    @apply flex;
-  }
-
-  @media (width <= 720px) {
-    .social-links {
-      @apply hidden;
-    }
-  }
-
-  #weather {
-    @apply text-center;
-  }
-
-  .main-info {
-    @apply flex items-center justify-center;
-  }
+  /* modern browsers, clip-path works inwards from each corner */
+  clip-path: inset(50%);
 }
