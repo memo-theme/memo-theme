@@ -4,11 +4,11 @@ const today = new Date();
 ---
 
 <footer>
-  <Weather />
-  <div class="right-side">
-    <span
-      >&copy; {today.getFullYear()} Your name here. All rights reserved.</span
-    >
+  <div class="column">
+    <Weather />
+  </div>
+  <div class="column">
+    <span>&copy; {today.getFullYear()} Your name here. All rights reserved.</span>
     <div class="social-links">
       <a href="https://m.webtoo.ls/@astro" target="_blank">
         <span class="sr-only">Follow Astro on Mastodon</span>
@@ -60,16 +60,18 @@ const today = new Date();
     padding: 2em 1em 6em 1em;
     background: linear-gradient(var(--gray-gradient)) no-repeat;
     color: rgb(var(--gray));
-    text-align: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 1rem;
   }
-  .right-side {
+  .column {
+    flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    text-align: center;
   }
   .social-links {
     display: flex;
@@ -83,6 +85,5 @@ const today = new Date();
   }
   .social-links a:hover {
     color: rgb(var(--gray-dark));
-    gap: 1rem;
   }
 </style>
