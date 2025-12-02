@@ -155,5 +155,8 @@
   }
 
   fetchWeather();
-  setInterval(fetchWeather, 600000); // 10 minutes
+  const weatherIntervalId = setInterval(fetchWeather, 600000); // 10 minutes
+  window.addEventListener("beforeunload", () => {
+    clearInterval(weatherIntervalId);
+  });
 </script>
