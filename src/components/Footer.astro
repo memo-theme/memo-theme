@@ -8,7 +8,7 @@ const today = new Date();
     <div class="column">
       <Weather />
     </div>
-    <div class="column">
+    <div class="column right-column">
       <span
         >&copy; {today.getFullYear()} Your name here. All rights reserved.</span
       >
@@ -18,8 +18,8 @@ const today = new Date();
           <svg
             viewBox="0 0 16 16"
             aria-hidden="true"
-            width="32"
-            height="32"
+            width="24"
+            height="24"
             astro-icon="social/mastodon"
             ><path
               fill="currentColor"
@@ -32,8 +32,8 @@ const today = new Date();
           <svg
             viewBox="0 0 16 16"
             aria-hidden="true"
-            width="32"
-            height="32"
+            width="24"
+            height="24"
             astro-icon="social/twitter"
             ><path
               fill="currentColor"
@@ -46,8 +46,8 @@ const today = new Date();
           <svg
             viewBox="0 0 16 16"
             aria-hidden="true"
-            width="32"
-            height="32"
+            width="24"
+            height="24"
             astro-icon="social/github"
             ><path
               fill="currentColor"
@@ -81,6 +81,9 @@ const today = new Date();
     align-items: center;
     justify-content: center;
     text-align: center;
+  }
+  .right-column {
+    font-size: 0.8rem;
   }
   .social-links {
     display: flex;
