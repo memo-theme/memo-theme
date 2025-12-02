@@ -32,6 +32,12 @@
     "binding": "ASSETS",
     "directory": "./dist",
   },
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "ee946a242fc4415e8f8e59b9458d90db",
+    },
+  ],
   "secrets_store_secrets": [
     {
       "binding": "JWT_SECRET",
@@ -42,6 +48,13 @@
       "binding": "TURNSTILE_SECRET_KEY",
       "store_id": "d8038e62b04b4974adbe1eeec64659a9",
       "secret_name": "TURNSTILE",
+    },
+  ],
+  "d1_databases": [
+    {
+      "binding": "DATABASE",
+      "database_name": "theme-memories-session",
+      "database_id": "ac78ae42-0fe7-463d-a134-7c99328868b5",
     },
   ],
 }

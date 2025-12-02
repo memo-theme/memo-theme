@@ -3,9 +3,6 @@ import cloudflare from "@astrojs/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
-import remarkGithubBlockquoteAlert from "remark-github-blockquote-alert";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 
 export default defineConfig({
   site: "https://332712.xyz",
@@ -22,8 +19,4 @@ export default defineConfig({
     },
   },
   integrations: [partytown(), sitemap()],
-  markdown: {
-    remarkPlugins: [remarkGithubBlockquoteAlert, remarkMath],
-    rehypePlugins: [rehypeKatex],
-  },
 });

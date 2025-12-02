@@ -1,7 +1,7 @@
 ---
 title: "Test Post with Slug and Password"
 description: "This is a test post to verify the custom slug and password functionality."
-pubDate: "2025-01-01"
+pubDate: "2024-01-01"
 updatedDate: "2025-11-01"
 heroImage: ""
 slug: "markdown-sample"
@@ -185,6 +185,10 @@ $$
 :::tip
 To escape math syntax, use `\$` inside math block, use `<span>$</span>` outside math block (only for inline).
 :::
+
+## Github repo
+
+::github{repo="saicaca/fuwari"}
 
 ## Video
 

@@ -2,8 +2,6 @@
 @import "@fontsource/shippori-mincho/400.css";
 @import "@fontsource/noto-serif-sc/400.css";
 
-@plugin "@tailwindcss/typography";
-
 @theme {
   --font-display: "Shippori Mincho", "Noto Serif SC", serif;
   --accent: #2337ff;
@@ -18,6 +16,12 @@
     0 16px 32px rgb(var(--gray), 33%);
 }
 
+/*
+  The CSS in this style tag is based off of Bear Blog's default CSS.
+  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
+  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+ */
+
 body {
   @apply font-display m-0 p-0 text-left bg-no-repeat text-lg;
 
@@ -30,6 +34,37 @@ body {
 
 main {
   @apply w-[720px] max-w-[calc(100%-2em)] m-auto py-12 px-4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply m-0 mb-2 leading-tight;
+
+  color: rgb(var(--black));
+}
+
+h1 {
+  @apply text-5xl;
+}
+
+h2 {
+  @apply text-4xl;
+}
+
+h3 {
+  @apply text-3xl;
+}
+
+h4 {
+  @apply text-2xl;
+}
+
+h5 {
+  @apply text-xl;
 }
 
 strong,
@@ -48,6 +83,16 @@ a:hover {
 a:focus {
   outline: 2px solid var(--accent-dark);
   outline-offset: 2px;
+
+  /* You may also opt for a background or underline change */
+}
+
+p {
+  @apply mb-4;
+}
+
+.prose p {
+  @apply mb-8;
 }
 
 textarea {
@@ -66,6 +111,32 @@ img {
   @apply max-w-full h-auto rounded-lg;
 }
 
+code {
+  @apply py-0.5 px-1 rounded;
+
+  background-color: rgb(var(--gray-light));
+}
+
+pre {
+  @apply p-6 rounded-lg;
+}
+
+pre > code {
+  all: unset;
+}
+
+blockquote {
+  @apply border-l-4 border-solid m-0 pl-5 text-xl;
+
+  border-color: var(--accent);
+}
+
+hr {
+  @apply border-0 border-t border-solid;
+
+  border-top-color: rgb(var(--gray-light));
+}
+
 @media (width <= 720px) {
   body {
     @apply text-lg;
@@ -79,5 +150,6 @@ img {
 .sr-only {
   @apply border-0 p-0 m-0 absolute h-px w-px overflow-hidden whitespace-nowrap;
 
+  /* modern browsers, clip-path works inwards from each corner */
   clip-path: inset(50%);
 }
