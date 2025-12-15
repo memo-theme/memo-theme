@@ -1,0 +1,68 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import { jwtVerify } from "jose";
+
+export const prerender = false;
+
+type Props = CollectionEntry<"blog">;
+
+// 2. Handle page requests for both static and server-rendered pages.
+const { dynamic } = Astro.params;
+
+// Astro's getCollection automatically handles slugification from file names,
+// which is consistent with the logic in your `scripts/hash_password.ts` file.
+const post = (await getCollection("blog")).find(
+  (p) => p.data.slug === dynamic || p.id === dynamic
+);
+
+if (!post) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const { env } = Astro.locals.runtime;
+const actual_slug = post.data.slug || post.id;
+// 3. If the post has a password, it must be server-rendered and requires authentication.
+if (post.data.password) {
+  const jwt_secret = await env.JWT_SECRET.get();
+  const secret = new TextEncoder().encode(jwt_secret);
+  const token = Astro.cookies.get(`post_access_${actual_slug}`)?.value;
+
+  let isAuthenticated = false;
+
+  if (token) {
+    try {
+      // `jwtVerify` is a robust check that handles multiple verifications at once:
+      // 1. Signature: Verifies the token was signed with our secret.
+      // 2. Expiration: Checks the 'exp' claim to ensure the token is not expired.
+      // 3. Subject: We require the 'sub' claim to match the post's slug,
+      //    ensuring this JWT is valid *only for this specific post*.
+      await jwtVerify(token, secret, {
+        subject: actual_slug,
+      });
+
+      // If jwtVerify completes without throwing, the user is authenticated.
+      isAuthenticated = true;
+    } catch (err) {
+      // If the token is expired, has an invalid signature, or the wrong subject,
+      // an error will be thrown, and we'll proceed as unauthenticated.
+      console.log("JWT verification failed, redirecting to /verify");
+    }
+  }
+
+  // 4. If the user is not authenticated, redirect them to the password page.
+  if (!isAuthenticated) {
+    return Astro.redirect(
+      `/verify?${new URLSearchParams({
+        slug: actual_slug,
+      }).toString()}`
+    );
+  }
+}
+
+const { Content } = await render(post);
+---
+
+<BlogPost {...post.data}>
+  <Content />
+</BlogPost>

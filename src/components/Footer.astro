@@ -1,0 +1,69 @@
+---
+import Weather from "./Weather.astro";
+const today = new Date();
+---
+
+<footer>
+  <div class="container">
+    <div class="column">
+      <Weather />
+    </div>
+    <div class="column right-column">
+      <span
+        >&copy; {today.getFullYear()} Your name here. All rights reserved.</span
+      >
+      <div class="license-links">
+        <a href="https://opendatacommons.org/licenses/odbl/" target="_blank"
+          >ODbL</a
+        >
+        <a
+          href="https://creativecommons.org/licenses/by-sa/4.0/"
+          target="_blank">CC BY-SA 4.0</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>
+<style>
+  footer {
+    padding: 2em 1em 6em 1em;
+    background: linear-gradient(var(--gray-gradient)) no-repeat;
+    color: rgb(var(--gray));
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 720px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .right-column {
+    font-size: 0.8rem;
+  }
+  .social-links,
+  .license-links {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 1em;
+  }
+  .social-links a,
+  .license-links a {
+    text-decoration: none;
+    color: rgb(var(--gray));
+  }
+  .social-links a:hover,
+  .license-links a:hover {
+    color: rgb(var(--gray-dark));
+  }
+</style>
